@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18  # Use the version your project requires
+          node-version: 18  # Use your Node.js version
           cache: 'npm'
 
       - name: Install dependencies
@@ -28,9 +28,10 @@ jobs:
       - name: Build Next.js project
         run: npm run build
 
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
       - name: Deploy to Netlify
-        uses: netlify/actions-cli@v2
-        with:
-          authToken: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          siteId: ${{ secrets.NETLIFY_SITE_ID }}
-          dir: out
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: netlify deploy --prod --dir=out --site=$NETLIFY_SITE_ID
