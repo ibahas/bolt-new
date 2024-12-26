@@ -13,24 +13,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18  # Use your Node.js version
           cache: 'npm'
 
+      # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci  # Use npm ci to ensure a clean install based on package-lock.json
 
+      # Step 4: Build the Next.js project
       - name: Build Next.js project
         run: npm run build
 
+      # Step 5: Install Netlify CLI
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
 
+      # Step 6: Deploy to Netlify
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
