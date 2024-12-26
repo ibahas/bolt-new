@@ -1,0 +1,36 @@
+name: Deploy Next.js to Netlify
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Use the version your project requires
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Next.js project
+        run: npm run build
+
+      - name: Deploy to Netlify
+        uses: netlify/actions-cli@v2
+        with:
+          authToken: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          siteId: ${{ secrets.NETLIFY_SITE_ID }}
+          dir: out
