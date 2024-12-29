@@ -1,37 +1,52 @@
 export interface User {
   id: string;
   email: string;
-  password_hash: string;
   name: string;
+  avatar?: string;
   phone?: string;
-  profile_picture?: string;
-  created_at: string;
-  updated_at: string;
+  twoFactorEnabled: boolean;
+  createdAt: Date;
+  role: 'user' | 'admin';
 }
 
 export interface Transaction {
   id: string;
-  sender_id: string;
-  recipient_id: string;
+  senderId: string;
+  receiverId: string;
   amount: number;
-  status: 'pending' | 'completed' | 'failed' | 'cancelled';
+  status: 'pending' | 'completed' | 'failed';
+  createdAt: Date;
   description?: string;
-  created_at: string;
+}
+
+export interface Chat {
+  id: string;
+  participants: string[];
+  lastMessage?: {
+    content: string;
+    senderId: string;
+    timestamp: Date;
+    type: 'text' | 'image';
+  };
+  createdAt: Date;
 }
 
 export interface Message {
   id: string;
-  sender_id: string;
-  recipient_id: string;
+  chatId: string;
   content: string;
-  is_encrypted: boolean;
-  created_at: string;
+  senderId: string;
+  type: 'text' | 'image';
+  timestamp: Date;
 }
 
-export interface AuditLog {
+export interface Ticket {
   id: string;
-  user_id: string | null;
-  action: string;
-  details?: string;
-  created_at: string;
+  userId: string;
+  title: string;
+  description: string;
+  status: 'open' | 'in-progress' | 'closed';
+  priority: 'low' | 'medium' | 'high';
+  createdAt: Date;
+  updatedAt: Date;
 }
